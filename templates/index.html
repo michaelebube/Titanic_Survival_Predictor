@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titanic Survival Predictor</title>
+    <style>
+        :root {
+            --primary-color: #2563eb; /* Blue */
+            --secondary-color: #10b981; /* Green */
+            --accent-color: #f59e0b; /* Amber */
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-color: #1f2937;
+            --muted-text: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --border-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--muted-text);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        input, select {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .clear-btn {
+            background-color: var(--muted-text);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .clear-btn:hover {
+            background-color: #4b5563;
+            transform: translateY(-1px);
+        }
+
+        .clear-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-container {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .result {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .survived {
+            color: var(--secondary-color);
+        }
+
+        .not-survived {
+            color: #ef4444; /* Red */
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Titanic Survival Predictor</h1>
+            <p class="subtitle">Discover the likelihood of survival based on passenger details from the historic Titanic disaster.</p>
+        </header>
+
+        <form class="form-container" action="/predict" method="post">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="pclass">Passenger Class</label>
+                    <select id="pclass" name="Pclass">
+                        <option value="1">1st Class</option>
+                        <option value="2">2nd Class</option>
+                        <option value="3" selected>3rd Class</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sex">Sex</label>
+                    <select id="sex" name="Sex">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="Age" step="0.1" placeholder="e.g., 29.5">
+                </div>
+
+                <div class="form-group">
+                    <label for="sibsp">Siblings/Spouses Aboard</label>
+                    <input type="number" id="sibsp" name="SibSp" value="" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="parch">Parents/Children Aboard</label>
+                    <input type="number" id="parch" name="Parch" value="" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="fare">Fare</label>
+                    <input type="number" id="fare" name="Fare" step="0.01" placeholder="e.g., 7.25">
+                </div>
+
+                <div class="form-group">
+                    <label for="embarked">Port of Embarkation</label>
+                    <select id="embarked" name="Embarked">
+                        <option value="S">Southampton</option>
+                        <option value="C">Cherbourg</option>
+                        <option value="Q">Queenstown</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 1rem; grid-column: 1 / -1; margin-top: 1rem;">
+                    <button type="submit" class="submit-btn">Predict Survival</button>
+                    <button type="reset" class="clear-btn">Clear Fields</button>
+                </div>
+            </div>
+        </form>
+
+        {% if prediction_text %}
+        <div class="result-container">
+            <div class="icon">
+                {% if prediction_text == 'Survived' %}
+                ✅
+                {% else %}
+                ❌
+                {% endif %}
+            </div>
+            <div class="result {% if prediction_text == 'Survived' %}survived{% else %}not-survived{% endif %}">
+                {{ prediction_text }}
+            </div>
+            <p>Based on the provided details, this passenger {{ 'would have' if prediction_text == 'Survived' else 'would not have' }} survived.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer style="text-align: center; margin-top: 3rem; padding: 1rem; color: var(--muted-text); font-size: 0.875rem;">
+        © 2026 Michael Ebube
+    </footer>
+</body>
+</html>
